@@ -1,5 +1,9 @@
 require "vorsprung/version"
+require "vorsprung/app_builder"
+require "vorsprung/app_generator"
 
 module Vorsprung
-  # Your code goes here...
+  def self.templates_root
+    File.expand_path('../templates', __dir__)
+  end
 end
