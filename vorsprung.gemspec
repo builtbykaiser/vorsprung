@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Built By Kaiser"]
   spec.email         = ["support@builtbykaiser.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "Give your Rails app a running start!"
+  spec.description   = "Vorsprung generates base Rails applications and stays up-to-date with best practices."
+  spec.homepage      = "https://github.com/builtbykaiser/vorsprung"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
