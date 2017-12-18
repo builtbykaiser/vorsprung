@@ -1,3 +1,4 @@
+require "rails/generators/rails/app/app_generator"
 require "vorsprung/version"
 require "vorsprung/app_builder"
 require "vorsprung/app_generator"
