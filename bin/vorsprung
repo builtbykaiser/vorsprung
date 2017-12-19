@@ -2,5 +2,4 @@
 
 require "vorsprung"
 
-AppBuilder = Vorsprung::AppBuilder
-Vorsprung::AppGenerator.start
+Vorsprung::CLI.start
