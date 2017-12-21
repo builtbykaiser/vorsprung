@@ -8,7 +8,7 @@ module Vorsprung
       run "rails new #{app_name}", capture: true
       template "Procfile", "#{app_name}/Procfile"
       template ".env", "#{app_name}/.env"
-      template "secrets.yml", "#{app_name}/config/secrets.yml"
+      template "secrets.yml", "#{app_name}/config/secrets.yml", force: true
     end
   end
 end
