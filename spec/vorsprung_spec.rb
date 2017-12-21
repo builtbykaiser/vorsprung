@@ -55,7 +55,7 @@ RSpec.describe Vorsprung do
   def setup
     FileUtils.mkdir_p(temp_dir)
     Dir.chdir(temp_dir) do
-      Bundler.clean_system("vorsprung new #{app_name}")
+      Bundler.clean_system("bundle exec vorsprung new #{app_name}")
     end
   end
 
