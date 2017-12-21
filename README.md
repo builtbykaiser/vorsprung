@@ -14,7 +14,7 @@ $ gem install vorsprung
 Then, to create a new Rails app, run:
 
 ```shell
-$ vorsprung myapp
+$ vorsprung new myapp
 ```
 
 And you'll be off to a running start!
