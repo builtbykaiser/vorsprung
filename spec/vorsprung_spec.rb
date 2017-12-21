@@ -38,6 +38,8 @@ RSpec.describe Vorsprung do
     expect(IO.read("#{app_path}/config/secrets.yml")).to match /shared:\n  secret_key_base: <%= ENV/
   end
 
+  it "uses PostgreSQL as the database"
+
   private
 
   def temp_dir
