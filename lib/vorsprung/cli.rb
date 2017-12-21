@@ -6,6 +6,7 @@ module Vorsprung
     def new(app_name)
       puts "Vorsprinkling you a new Rails app..."
       run "rails new #{app_name}", capture: true
+      template "Procfile", "#{app_name}/Procfile"
     end
   end
 end

@@ -24,6 +24,11 @@ RSpec.describe Vorsprung do
     expect(File).to exist("#{app_path}/public")
   end
 
+  it "creates a Procfile" do
+    expect(IO.read("#{app_path}/Procfile")).to match /web:/
+    expect(IO.read("#{app_path}/Procfile")).to match /worker:/
+  end
+
   private
 
   def temp_dir
