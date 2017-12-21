@@ -10,6 +10,7 @@ RSpec.describe Vorsprung do
     Dir.chdir(app_path) do
       expect(`rails --version`).to include Vorsprung::RAILS_VERSION
     end
+    expect(file("Gemfile")).to match /gem 'rails', '~> #{Vorsprung::RAILS_VERSION}'/
   end
 
   it "installs a standard Rails app" do
@@ -39,6 +40,10 @@ RSpec.describe Vorsprung do
   end
 
   it "uses PostgreSQL as the database"
+
+  it "creates a custom Gemfile" do
+    expect(file("Gemfile")).to match /# added by Vorsprung/
+  end
 
   private
 
