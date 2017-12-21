@@ -29,6 +29,15 @@ RSpec.describe Vorsprung do
     expect(IO.read("#{app_path}/Procfile")).to match /worker:/
   end
 
+  it "creates an .env file with SECRET_KEY_BASE" do
+    expect(IO.read("#{app_path}/.env")).to match /SECRET_KEY_BASE='\h+'/
+  end
+
+  it "creates a secrets.yml file with SECRET_KEY_BASE" do
+    # include a bit of ERB so we confirm it's being escaped properly
+    expect(IO.read("#{app_path}/config/secrets.yml")).to match /shared:\n  secret_key_base: <%= ENV/
+  end
+
   private
 
   def temp_dir
