@@ -12,6 +12,18 @@ RSpec.describe Vorsprung do
     end
   end
 
+  it "installs a standard Rails app" do
+    # some standard Rails files that we've randomly picked
+    # to make sure the Rails generator actually ran
+    expect(File).to exist("#{app_path}/Rakefile")
+    expect(File).to exist("#{app_path}/Gemfile")
+    expect(File).to exist("#{app_path}/app/models/application_record.rb")
+    expect(File).to exist("#{app_path}/bin/rails")
+    expect(File).to exist("#{app_path}/config/application.rb")
+    expect(File).to exist("#{app_path}/lib")
+    expect(File).to exist("#{app_path}/public")
+  end
+
   private
 
   def temp_dir
