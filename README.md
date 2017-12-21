@@ -19,6 +19,14 @@ $ vorsprung myapp
 
 And you'll be off to a running start!
 
+## Postgres & Mac OS X
+
+If it's your first time installing the `pg` gem on Mac OS X, you may have to use one of the methods below:
+
+Homebrew: `gem install pg -- --with-pg-config=/usr/local/bin/pg_config`
+
+MacPorts: `gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config`
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
