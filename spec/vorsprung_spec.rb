@@ -25,22 +25,26 @@ RSpec.describe Vorsprung do
   end
 
   it "creates a Procfile" do
-    expect(IO.read("#{app_path}/Procfile")).to match /web:/
-    expect(IO.read("#{app_path}/Procfile")).to match /worker:/
+    expect(file("Procfile")).to match /web:/
+    expect(file("Procfile")).to match /worker:/
   end
 
   it "creates an .env file with SECRET_KEY_BASE" do
-    expect(IO.read("#{app_path}/.env")).to match /SECRET_KEY_BASE='\h+'/
+    expect(file(".env")).to match /SECRET_KEY_BASE='\h+'/
   end
 
   it "creates a secrets.yml file with SECRET_KEY_BASE" do
     # include a bit of ERB so we confirm it's being escaped properly
-    expect(IO.read("#{app_path}/config/secrets.yml")).to match /shared:\n  secret_key_base: <%= ENV/
+    expect(file("config/secrets.yml")).to match /shared:\n  secret_key_base: <%= ENV/
   end
 
   it "uses PostgreSQL as the database"
 
   private
+
+  def file(path)
+    IO.read("#{app_path}/#{path}")
+  end
 
   def temp_dir
     "tmp"
