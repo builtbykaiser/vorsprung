@@ -4,7 +4,7 @@ module Vorsprung
 
     desc "new APP_NAME", "create a new Rails app called APP_NAME"
     def new(app_name)
-      puts "Vorsprinkling you a new Rails app..."
+      say "Vorsprinkling you a new Rails app..."
       run "rails new #{app_name}", capture: true
       template "Procfile", "#{app_name}/Procfile"
       template ".env", "#{app_name}/.env"
