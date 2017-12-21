@@ -1,4 +1,5 @@
 # Vorsprung
+[![Build Status](https://travis-ci.org/builtbykaiser/vorsprung.svg?branch=master)](https://travis-ci.org/builtbykaiser/vorsprung) [![Coverage Status](https://coveralls.io/repos/github/builtbykaiser/vorsprung/badge.svg?branch=master)](https://coveralls.io/github/builtbykaiser/vorsprung?branch=master)
 
 Give your Rails app a running start! Vorsprung generates the base Rails applications for [Built By Kaiser](http://www.builtbykaiser.com) and stays up-to-date with best practices.
 
