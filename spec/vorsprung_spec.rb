@@ -39,9 +39,31 @@ RSpec.describe Vorsprung do
     expect(file("config/secrets.yml")).to match /shared:\n  secret_key_base: <%= ENV/
   end
 
-  it "uses PostgreSQL as the database" do
-    expect(file("config/database.yml")).to match /adapter: postgresql/
-    expect(file("Gemfile")).to match /gem (?<quote>['"])pg\k<quote>/
+  context "Database" do
+    it "sets PostgreSQL as the database" do
+      expect(file("config/database.yml")).to match /adapter: postgresql/
+    end
+
+    it "installs the pg gem" do
+      expect(file("Gemfile")).to match /gem (?<quote>['"])pg\k<quote>/
+    end
+
+    it "uses DATABASE_URL env variable for every environment" do
+      expect(file("config/database.yml")).to match /url:  <%= ENV\["DATABASE_URL"\] %>/
+      expect(file("config/database.yml")).to match /development:\n  <<: \*default/
+      expect(file("config/database.yml")).to match /test:\n  <<: \*default/
+      expect(file("config/database.yml")).to match /production:\n  <<: \*default/
+    end
+
+    it "adds DATABASE_URL to .env" do
+      expect(file(".env")).to match /DATABASE_URL='.*'/
+    end
+
+    it "uses branched databases" do
+      expect(file("config/database.yml")).to match /<% branch = `git symbolic-ref HEAD/
+      expect(file("config/database.yml")).to match /development:.*database: dev_<%= branch %>/m
+      expect(file("config/database.yml")).to match /test:.*database: test_<%= branch %>/m
+    end
   end
 
   it "creates a custom Gemfile" do

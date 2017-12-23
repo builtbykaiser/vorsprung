@@ -10,6 +10,16 @@ module Vorsprung
       template ".env", "#{app_name}/.env"
       template "Gemfile", "#{app_name}/Gemfile", force: true
       template "secrets.yml", "#{app_name}/config/secrets.yml", force: true
+      template "database.yml", "#{app_name}/config/database.yml", force: true
+      insert_into_file "#{app_name}/.env", database_env(app_name), after: /SECRET_KEY_BASE='\h+'\n/
+    end
+
+    private
+
+    def database_env(app_name)
+      user = app_name
+      pass = SecureRandom.urlsafe_base64
+      "DATABASE_URL='postgres:///#{user}:#{pass}@localhost:5432'"
     end
   end
 end
