@@ -66,6 +66,22 @@ RSpec.describe Vorsprung do
     end
   end
 
+  context "Docker" do
+    it "creates a PostgreSQL database with the right user" do
+      expect(file("docker-compose.yml")).to match /POSTGRES_USER: #{app_name}/
+    end
+
+    it "creates a PostgreSQL database with the right password" do
+      password = file(".env").match(/DATABASE_URL='postgres:\/\/\/#{app_name}:(?<password>.*)@localhost/)[:password]
+      expect(file("docker-compose.yml")).to match /POSTGRES_PASSWORD: #{password}/
+    end
+
+    it "creates a PostgreSQL database with the right port" do
+      port = file(".env").match(/DATABASE_URL='.*@localhost:(?<port>\d+)/)[:port]
+      expect(file("docker-compose.yml")).to match /ports:.*#{port}:5432/m
+    end
+  end
+
   it "creates a custom Gemfile" do
     expect(file("Gemfile")).to match /# added by Vorsprung/
   end

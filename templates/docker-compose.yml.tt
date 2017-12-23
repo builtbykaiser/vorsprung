@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:9.5'
+    environment:
+      POSTGRES_USER: <%= config[:postgres_user] %>
+      POSTGRES_PASSWORD: <%= config[:postgres_pass] %>
+    ports:
+      - '<%= config[:postgres_port] %>:5432'
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+
+volumes:
+  postgres:
