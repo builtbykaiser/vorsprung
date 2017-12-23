@@ -11,5 +11,14 @@ services:
     volumes:
       - 'postgres:/var/lib/postgresql/data'
 
+  redis:
+    image: 'redis:3.2-alpine'
+    command: redis-server
+    ports:
+      - '<%= config[:redis_port] %>:6379'
+    volumes:
+      - 'redis:/var/lib/redis/data'
+
 volumes:
   postgres:
+  redis:

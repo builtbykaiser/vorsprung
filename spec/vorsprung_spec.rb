@@ -59,6 +59,10 @@ RSpec.describe Vorsprung do
       expect(file(".env")).to match /DATABASE_URL='.*'/
     end
 
+    it "does not add DATABASE_URL to secrets.yml" do
+      expect(file("config/secrets.yml")).to_not match /database_url/
+    end
+
     it "uses branched databases" do
       expect(file("config/database.yml")).to match /<% branch = `git symbolic-ref HEAD/
       expect(file("config/database.yml")).to match /development:.*database: dev_<%= branch %>/m
@@ -66,7 +70,7 @@ RSpec.describe Vorsprung do
     end
   end
 
-  context "Docker" do
+  context "Docker: Postgres" do
     it "creates a PostgreSQL database with the right user" do
       expect(file("docker-compose.yml")).to match /POSTGRES_USER: #{app_name}/
     end
@@ -79,6 +83,21 @@ RSpec.describe Vorsprung do
     it "creates a PostgreSQL database with the right port" do
       port = file(".env").match(/DATABASE_URL='.*@localhost:(?<port>\d+)/)[:port]
       expect(file("docker-compose.yml")).to match /ports:.*#{port}:5432/m
+    end
+  end
+
+  context "Docker: Redis" do
+    it "creates a Redis server with the right port" do
+      port = file(".env").match(/REDIS_URL='.*localhost:(?<port>\d+)/)[:port]
+      expect(file("docker-compose.yml")).to match /ports:.*#{port}:6379/m
+    end
+
+    it "adds REDIS_URL to .env" do
+      expect(file(".env")).to match /REDIS_URL='.*'/
+    end
+
+    it "adds REDIS_URL to secrets.yml" do
+      expect(file("config/secrets.yml")).to match /redis_url: <%= ENV\["REDIS_URL"\] %>/
     end
   end
 
