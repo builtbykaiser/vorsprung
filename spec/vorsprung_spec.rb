@@ -39,7 +39,10 @@ RSpec.describe Vorsprung do
     expect(file("config/secrets.yml")).to match /shared:\n  secret_key_base: <%= ENV/
   end
 
-  it "uses PostgreSQL as the database"
+  it "uses PostgreSQL as the database" do
+    expect(file("config/database.yml")).to match /adapter: postgresql/
+    expect(file("Gemfile")).to match /gem (?<quote>['"])pg\k<quote>/
+  end
 
   it "creates a custom Gemfile" do
     expect(file("Gemfile")).to match /# added by Vorsprung/
