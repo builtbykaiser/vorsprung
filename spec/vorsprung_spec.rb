@@ -29,6 +29,10 @@ RSpec.describe Vorsprung do
     expect(file("Procfile")).to match /web:/
   end
 
+  it "sets the max threads for ActiveRecord connection pool size" do
+    expect(file("Procfile")).to match /web.*RAILS_MAX_THREADS=\d/
+  end
+
   it "creates an .env file with SECRET_KEY_BASE" do
     expect(file(".env")).to match /SECRET_KEY_BASE='\h+'/
   end
@@ -107,6 +111,10 @@ RSpec.describe Vorsprung do
 
     it "adds a worker entry to the Procfile" do
       expect(file("Procfile")).to match /worker/
+    end
+
+    it "sets the max threads for Sidekiq concurrency and ActiveRecord connection pool size" do
+      expect(file("Procfile")).to match /worker.*RAILS_MAX_THREADS=\d/
     end
 
     it "creates a worker process with 3 priority levels" do

@@ -19,8 +19,8 @@ module Vorsprung
 
     def setup_sidekiq
       add_gem "sidekiq"
-      add_procfile_process "worker1: bundle exec sidekiq -q high -q default -q low"
-      add_procfile_process "worker2: bundle exec sidekiq -q low -q default -q high"
+      add_procfile_process "worker1: RAILS_MAX_THREADS=25 bundle exec sidekiq -q high -q default -q low"
+      add_procfile_process "worker2: RAILS_MAX_THREADS=25 bundle exec sidekiq -q low -q default -q high"
       add_config "sidekiq.yml"
     end
 
