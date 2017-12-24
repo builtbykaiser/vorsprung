@@ -6,31 +6,34 @@ module Vorsprung
 
     desc "new APP_NAME", "create a new Rails app called APP_NAME"
     def new(app_name)
+      @app_name = app_name
       say "Vorsprinkling you a new Rails app..."
       run "rails new #{app_name} --database=postgresql", capture: true
       template "Procfile", "#{app_name}/Procfile"
       template ".env", "#{app_name}/.env"
       template "Gemfile", "#{app_name}/Gemfile", force: true
       template "secrets.yml", "#{app_name}/config/secrets.yml", force: true
-      setup_databases(app_name)
+      setup_databases
     end
 
     private
 
+    def app_name
+      @app_name ||= '.'
+    end
+
     # this sets up Postgres and Redis with Docker
-    def setup_databases(app_name)
+    def setup_databases
       postgres_user = app_name
       postgres_pass = SecureRandom.urlsafe_base64
       postgres_port = find_open_port
       redis_port = find_open_port
 
       add_env "REDIS_URL",
-              "redis://localhost:#{redis_port}",
-              app_name
+              "redis://localhost:#{redis_port}"
 
       add_env "DATABASE_URL",
               "postgres:///#{postgres_user}:#{postgres_pass}@localhost:#{postgres_port}",
-              app_name,
               skip_secrets: true
 
       template "database.yml",
@@ -55,7 +58,7 @@ module Vorsprung
       port
     end
 
-    def add_env(key, value, app_name, skip_secrets: false)
+    def add_env(key, value, skip_secrets: false)
       insert_into_file "#{app_name}/.env",
                        "#{key.upcase}='#{value}'",
                        after: /SECRET_KEY_BASE='\h+'\n/
