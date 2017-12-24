@@ -9,10 +9,10 @@ module Vorsprung
       @app_name = app_name
       say "Vorsprinkling you a new Rails app..."
       run "rails new #{app_name} --database=postgresql", capture: true
-      template "Procfile", "#{app_name}/Procfile"
-      template ".env", "#{app_name}/.env"
-      template "Gemfile", "#{app_name}/Gemfile", force: true
-      template "secrets.yml", "#{app_name}/config/secrets.yml", force: true
+      add_file "Procfile"
+      add_file ".env"
+      add_file "Gemfile"
+      add_config "secrets.yml"
       setup_databases
     end
 
@@ -20,6 +20,18 @@ module Vorsprung
 
     def app_name
       @app_name ||= '.'
+    end
+
+    def add_file(source, destination = nil)
+      destination ||= source
+      template source,
+               "#{app_name}/#{destination}",
+               force: true
+    end
+
+    def add_config(source, destination = nil)
+      destination ||= source
+      add_file(source, "config/#{destination}")
     end
 
     # this sets up Postgres and Redis with Docker
