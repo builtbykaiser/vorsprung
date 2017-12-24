@@ -32,7 +32,7 @@ module Vorsprung
 
     def add_gem(name)
       insert_into_file "#{app_name}/Gemfile",
-                       "gem '#{name}'\/n",
+                       "gem '#{name}'\n",
                        after: /# added by Vorsprung/
     end
 
