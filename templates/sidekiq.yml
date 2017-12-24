@@ -1,0 +1,4 @@
+---
+# Heroku has a process timeout of 30 seconds
+# https://github.com/mperham/sidekiq/wiki/Deployment#heroku
+:timeout: 25

@@ -27,7 +27,6 @@ RSpec.describe Vorsprung do
 
   it "creates a Procfile" do
     expect(file("Procfile")).to match /web:/
-    expect(file("Procfile")).to match /worker:/
   end
 
   it "creates an .env file with SECRET_KEY_BASE" do
@@ -98,6 +97,28 @@ RSpec.describe Vorsprung do
 
     it "adds REDIS_URL to secrets.yml" do
       expect(file("config/secrets.yml")).to match /redis_url: <%= ENV\["REDIS_URL"\] %>/
+    end
+  end
+
+  context "Background Jobs" do
+    it "installs the Sidekiq gem" do
+      expect(file("Gemfile")).to match /gem 'sidekiq'/
+    end
+
+    it "adds a worker entry to the Procfile" do
+      expect(file("Procfile")).to match /worker/
+    end
+
+    it "creates a worker process with 3 priority levels" do
+      expect(file("Procfile")).to match /worker.*high.*default.*low/
+    end
+
+    it "creates a 2nd worker process to prevent job starvation" do
+      expect(file("Procfile")).to match /worker.*low.*default.*high/
+    end
+
+    it "sets Sidekiq worker process timeout to 25 seconds for Heroku" do
+      expect(file("config/sidekiq.yml")).to match /:timeout: 25/
     end
   end
 

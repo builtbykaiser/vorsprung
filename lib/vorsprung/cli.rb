@@ -14,12 +14,26 @@ module Vorsprung
       add_file "Gemfile"
       add_config "secrets.yml"
       setup_databases
+      setup_sidekiq
+    end
+
+    def setup_sidekiq
+      add_gem "sidekiq"
+      add_procfile_process "worker1: bundle exec sidekiq -q high -q default -q low"
+      add_procfile_process "worker2: bundle exec sidekiq -q low -q default -q high"
+      add_config "sidekiq.yml"
     end
 
     private
 
     def app_name
       @app_name ||= '.'
+    end
+
+    def add_gem(name)
+      insert_into_file "#{app_name}/Gemfile",
+                       "gem '#{name}'",
+                       after: /# added by Vorsprung/
     end
 
     def add_file(source, destination = nil)
@@ -32,6 +46,10 @@ module Vorsprung
     def add_config(source, destination = nil)
       destination ||= source
       add_file(source, "config/#{destination}")
+    end
+
+    def add_procfile_process(process)
+      append_to_file "#{app_name}/Procfile", process
     end
 
     # this sets up Postgres and Redis with Docker
