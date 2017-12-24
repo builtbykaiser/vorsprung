@@ -32,7 +32,7 @@ module Vorsprung
 
     def add_gem(name)
       insert_into_file "#{app_name}/Gemfile",
-                       "gem '#{name}'",
+                       "gem '#{name}'\/n",
                        after: /# added by Vorsprung/
     end
 
@@ -49,7 +49,7 @@ module Vorsprung
     end
 
     def add_procfile_process(process)
-      append_to_file "#{app_name}/Procfile", process
+      append_to_file "#{app_name}/Procfile", "#{process}\n"
     end
 
     # this sets up Postgres and Redis with Docker
