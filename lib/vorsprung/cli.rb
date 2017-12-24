@@ -18,7 +18,7 @@ module Vorsprung
     end
 
     def setup_sidekiq
-      add_gem "sidekiq"
+      add_gem "sidekiq", comment: "background jobs"
       add_procfile_process "worker1: RAILS_MAX_THREADS=25 bundle exec sidekiq -q high -q default -q low"
       add_procfile_process "worker2: RAILS_MAX_THREADS=25 bundle exec sidekiq -q low -q default -q high"
       add_config "sidekiq.yml"
@@ -30,9 +30,13 @@ module Vorsprung
       @app_name ||= '.'
     end
 
-    def add_gem(name)
+    def add_gem(name, comment: nil)
+      line = "gem '#{name}'"
+      line += " ##{comment}" if comment
+      line += "\n"
+
       insert_into_file "#{app_name}/Gemfile",
-                       "gem '#{name}'\n",
+                       line,
                        after: /# added by Vorsprung/
     end
 
