@@ -8,7 +8,7 @@ module Vorsprung
     def new(app_name)
       @app_name = app_name
       say "Vorsprinkling you a new Rails app..."
-      run "rails new #{app_name} --database=postgresql", capture: true
+      run "rails new #{app_name} --database=postgresql --skip-bundle", capture: true
       add_file "Procfile"
       add_file ".env"
       add_file "Gemfile"
