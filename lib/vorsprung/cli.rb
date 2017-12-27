@@ -45,7 +45,7 @@ module Vorsprung
     def add_gem(name, required: true, comment: nil)
       line = "gem '#{name}'"
       line += ", require: false" if !required
-      line += " ##{comment}" if comment
+      line += " # #{comment}" if comment
       line += "\n"
 
       insert_into_file "#{app_name}/Gemfile",
