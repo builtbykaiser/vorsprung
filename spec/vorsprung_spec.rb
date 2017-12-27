@@ -7,10 +7,6 @@ RSpec.describe Vorsprung do
   end
 
   it "uses the proper version of Rails" do
-    Dir.chdir(app_path) do
-      version = Bundler.with_clean_env { `rails --version` }
-      expect(version).to include Vorsprung::RAILS_VERSION
-    end
     expect(file("Gemfile")).to match /gem 'rails', '~> #{Vorsprung::RAILS_VERSION}'/
   end
 
@@ -131,8 +127,15 @@ RSpec.describe Vorsprung do
     end
   end
 
-  it "creates a custom Gemfile" do
-    expect(file("Gemfile")).to match /# added by Vorsprung/
+  context "Gems" do
+    it "creates a custom Gemfile" do
+      expect(file("Gemfile")).to match /# added by Vorsprung/
+    end
+
+    it "adds the Bootsnap gem" do
+      expect(file("Gemfile")).to match /gem 'bootsnap'/
+      expect(file("config/boot.rb")).to match /require 'bootsnap\/setup'/
+    end
   end
 
   private

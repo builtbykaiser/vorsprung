@@ -15,6 +15,7 @@ module Vorsprung
       add_config "secrets.yml"
       setup_databases
       setup_sidekiq
+      setup_bootsnap
     end
 
     def setup_sidekiq
@@ -24,20 +25,32 @@ module Vorsprung
       add_config "sidekiq.yml"
     end
 
+    def setup_bootsnap
+      add_gem 'bootsnap', required: false, comment: "speeds up app boot time"
+
+      file = "#{app_name}/config/boot.rb"
+      line = "require 'bootsnap/setup'"
+
+      unless IO.read(file).match /#{line}/
+        insert_into_file file, line, after: /require 'bundler\/setup'.*\n/
+      end
+    end
+
     private
 
     def app_name
       @app_name ||= '.'
     end
 
-    def add_gem(name, comment: nil)
+    def add_gem(name, required: true, comment: nil)
       line = "gem '#{name}'"
+      line += ", require: false" if !required
       line += " ##{comment}" if comment
       line += "\n"
 
       insert_into_file "#{app_name}/Gemfile",
                        line,
-                       after: /# added by Vorsprung/
+                       after: /# added by Vorsprung\n/
     end
 
     def add_file(source, destination = nil)
