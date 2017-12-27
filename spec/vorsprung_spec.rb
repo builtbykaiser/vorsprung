@@ -8,7 +8,8 @@ RSpec.describe Vorsprung do
 
   it "uses the proper version of Rails" do
     Dir.chdir(app_path) do
-      expect(`rails --version`).to include Vorsprung::RAILS_VERSION
+      version = Bundler.with_clean_env { `rails --version` }
+      expect(version).to include Vorsprung::RAILS_VERSION
     end
     expect(file("Gemfile")).to match /gem 'rails', '~> #{Vorsprung::RAILS_VERSION}'/
   end
