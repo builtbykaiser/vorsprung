@@ -16,6 +16,13 @@ module Vorsprung
       setup_databases
       setup_sidekiq
       setup_bootsnap
+      gemsurance
+    end
+
+    desc "gemsurance", "installs gemsurance"
+    def gemsurance
+      add_gem "gemsurance", group: :development
+      append_to_file "#{app_name}/.gitignore", "gemsurance_report.html\n"
     end
 
     private
@@ -42,9 +49,10 @@ module Vorsprung
       @app_name ||= '.'
     end
 
-    def add_gem(name, required: true, comment: nil)
+    def add_gem(name, required: true, group: nil, comment: nil)
       line = "gem '#{name}'"
       line += ", require: false" if !required
+      line += ", group: :#{group}" if group
       line += " # #{comment}" if comment
       line += "\n"
 

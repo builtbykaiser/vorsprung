@@ -136,6 +136,11 @@ RSpec.describe Vorsprung do
       expect(file("Gemfile")).to match /gem 'bootsnap'/
       expect(file("config/boot.rb")).to match /require 'bootsnap\/setup'/
     end
+
+    it "adds the Gemsurance gem" do
+      expect(file("Gemfile")).to match /gem 'gemsurance'/
+      expect(file(".gitignore")).to match /gemsurance_report.html/
+    end
   end
 
   private
