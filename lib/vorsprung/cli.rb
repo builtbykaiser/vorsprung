@@ -18,6 +18,8 @@ module Vorsprung
       setup_bootsnap
     end
 
+    private
+
     def setup_sidekiq
       add_gem "sidekiq", comment: "background jobs"
       add_procfile_process "worker1: RAILS_MAX_THREADS=25 bundle exec sidekiq -q high -q default -q low"
@@ -35,8 +37,6 @@ module Vorsprung
         insert_into_file file, line, after: /require 'bundler\/setup'.*\n/
       end
     end
-
-    private
 
     def app_name
       @app_name ||= '.'
